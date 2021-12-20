@@ -1,52 +1,88 @@
-var generateBtn = document.querySelector("#generate");	
-function generatePassword() {}
-    
+var generateBtn = document.querySelector("#generate");
 
-function writePassword() {
-        var password = generatePassword();
-        var passwordText = document.querySelector("#password");
-      
-        passwordText.value = password;}
+function generatePassword () {
+  var password='';
+  var selectedChar = [];
+    passwordLength = checkIfNaN(passwordLength);
   
-  var passLength = prompt("Please enter your password here?")
+      //confirms
+  lower = confirm("Click ok to confirm including upper case letters."); 
+  caps = confirm("Click ok to confirm including lower case letters."); 
+  numeric = confirm("Click ok to confirm including numeric values."); 
+  special = confirm("Click ok to confirm including special characters."); 
+  
+  while (passwordLength < 8 || passwordLength > 128) {
+    if (passwordLength < 8) {
+        alert("Password must be at least 8 characters long!");
+        passwordLength = prompt("Enter a new password length:");
+        passwordLength = checkIfNaN(passwordLength);}
+        
+    
+    else if (passwordLength > 128) {
+        alert("Password cannot be longer than 128 characters!");
+        passwordLength = prompt("Enter a new password length:");
+        passwordLength = checkIfNaN(passwordLength);}
+    else {
+        passwordLength = checkIfNaN(passwordLength);
+    }
 
-if (passlength < 8 || passlength > 128){
-    alert("Length must be 8-128 characters")}
-    if (passlength >= 8 && passlength <= 128){
-        var uppercase = confirm("Would you like to use uppercase letters?")
-        var lowercase = confirm("Would you like to use lowercase letters?")
-        var numbers = confirm("would you like to use numbers?")
-        var symbols = confirm("would you like to use special characters?")
-        }    
-         if (uppercase != true && lowercase != true && numbers != true && symbols != true){
-            alert("You must select at least one character type!");       
-}
-var randomFunc = {
-	lower: getRandomLower,
-	upper: getRandomUpper,
-	number: getRandomNumber,
-	symbol: getRandomSymbol
-}
-    function getRandomLower() {
-return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-}
 
-function getRandomUpper() {
-	return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
-}
-function getRandomNumber() {
-	return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
-}
+var UpperCase = confirm("Do you want to include uppercase letters?");
+var LowerCase = confirm("Do you want to include lowercase letters?");
+var Number = confirm("Do you want to include numbers?");
+var SpecialChar = confirm("Do you want to include special symbols?");
 
-function getRandomSymbol() {
-	const symbols = '!@#$%^&*(){}[]=<>/,.'
-	return symbols[Math.floor(Math.random() * symbols.length)];}
+if (UpperCase) {selectedChar.push("upperCase");}
+if (LowerCase) {selectedChar.push("lowerCase");}
+if (Number) {selectedChar.push("number");}
+if (SpecialChar) {selectedChar.push("specialChar");}
+
+
+for (var i = 0; i < passwordLength; i++){
+    var randIndex = Math.floor(Math.random()*selectedChar.length);
+    randCharType = selectedChar[randIndex];
+
+    if (randCharType === "lowerCase") {
+        // generates random lowercase letter as ASCII 
+        var newChar = String.fromCharCode(Math.floor(Math.random()*26)+97);
+        console.log(newChar);
+    }
+    else if (randCharType === "upperCase") {
+        //generates random Uppercase letter as ASCII 
+        var newChar = String.fromCharCode(Math.floor(Math.random()*26)+64);
+        console.log(newChar);
+    }
+    else if (randCharType === "number") {
+        // generates random number (0-9) as ASCII 
+        var newChar = String.fromCharCode(Math.floor(Math.random()*10)+48);
    
-   document.getElementById('clipboard').addEventListener('click',() => {
-	const textarea = document.createElement('textarea');
-	const password = resultEl.innerText;
-	
-	var password = passwordBlank.join("");
-  console.log("Your Pasword is: " + password);
-  return password;
+    }
+    else {
+        var specialCharArr = ["\\","!","|","\"","@","·","#","$","~","%","&","¬","/","(",")","=","?","'","^","<",">",",",";",".",":","-","_","+","-","*","[","]","{","}"];
+        var specialCharIndex = Math.floor(Math.random()*specialCharArr.length);
+        var newChar = specialCharArr[specialCharIndex];
+        console.log(newChar);
+    }
+    password = (password + newChar);
 }
+
+passwordDiv = document.getElementById("password");
+
+
+
+// Creates a variable to target the button for triggering the copy function
+var copy = document.querySelector("#copy");
+copy.addEventListener("click", function () {
+    copyPassword();
+});
+
+// Copy the password to the clipboard
+function copyPassword() {
+    document.getElementById("password").setAttribute("style", "color: green;");
+    document.getElementById("password").select();
+    document.getElementById("password").focus();
+    document.Command("Copy");
+    alert("Your password has been copied to the clipboard");
+}
+
+console.log(copyPassword)
