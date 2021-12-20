@@ -1,88 +1,74 @@
 var generateBtn = document.querySelector("#generate");
+var password = document.querySelector("#password");
 
-function generatePassword () {
-  var password='';
-  var selectedChar = [];
-    passwordLength = checkIfNaN(passwordLength);
-  
-      //confirms
-  lower = confirm("Click ok to confirm including upper case letters."); 
-  caps = confirm("Click ok to confirm including lower case letters."); 
-  numeric = confirm("Click ok to confirm including numeric values."); 
-  special = confirm("Click ok to confirm including special characters."); 
-  
-  while (passwordLength < 8 || passwordLength > 128) {
-    if (passwordLength < 8) {
-        alert("Password must be at least 8 characters long!");
-        passwordLength = prompt("Enter a new password length:");
-        passwordLength = checkIfNaN(passwordLength);}
-        
-    
-    else if (passwordLength > 128) {
-        alert("Password cannot be longer than 128 characters!");
-        passwordLength = prompt("Enter a new password length:");
-        passwordLength = checkIfNaN(passwordLength);}
-    else {
-        passwordLength = checkIfNaN(passwordLength);
-    }
+// var for upper and lowercase letters, numbers, and characters)
+var lowercase = "abcdefghijklmnopqrstuvwxyz";
+var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var numbers = "0123456789";
+var specialCharacters = " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
+var optionsVariable = "";
 
-
-var UpperCase = confirm("Do you want to include uppercase letters?");
-var LowerCase = confirm("Do you want to include lowercase letters?");
-var Number = confirm("Do you want to include numbers?");
-var SpecialChar = confirm("Do you want to include special symbols?");
-
-if (UpperCase) {selectedChar.push("upperCase");}
-if (LowerCase) {selectedChar.push("lowerCase");}
-if (Number) {selectedChar.push("number");}
-if (SpecialChar) {selectedChar.push("specialChar");}
-
-
-for (var i = 0; i < passwordLength; i++){
-    var randIndex = Math.floor(Math.random()*selectedChar.length);
-    randCharType = selectedChar[randIndex];
-
-    if (randCharType === "lowerCase") {
-        // generates random lowercase letter as ASCII 
-        var newChar = String.fromCharCode(Math.floor(Math.random()*26)+97);
-        console.log(newChar);
-    }
-    else if (randCharType === "upperCase") {
-        //generates random Uppercase letter as ASCII 
-        var newChar = String.fromCharCode(Math.floor(Math.random()*26)+64);
-        console.log(newChar);
-    }
-    else if (randCharType === "number") {
-        // generates random number (0-9) as ASCII 
-        var newChar = String.fromCharCode(Math.floor(Math.random()*10)+48);
+    // confirm
+    var lowercaseL = confirm("Do you want your password to contain lowercase letters?");
+    var uppercasel = confirm("Do you want your password to contain uppercase letters?");
+    var numbers = confirm("Do you want your password to contain numbers?");
+    var specialChar = confirm("Do you want your password to contain special characters?");
+    var passwordLength = prompt("Choose a password length of at least 8 characters and no more than 128 characters.");
    
+
+    // Write a function that generates a random password in the "text area" box
+function writePassword() {
+    // chechking if the password it's between 8 and 128 characters
+    if (passwordLength < 8 || passwordLength > 128) {
+        alert("Your password is not between 8 characters and 128 characters. Please try again.");
+        var passwordLength = prompt("Choose a password length of at least 8 characters and no more than 128 characters.");
     }
-    else {
-        var specialCharArr = ["\\","!","|","\"","@","·","#","$","~","%","&","¬","/","(",")","=","?","'","^","<",">",",",";",".",":","-","_","+","-","*","[","]","{","}"];
-        var specialCharIndex = Math.floor(Math.random()*specialCharArr.length);
-        var newChar = specialCharArr[specialCharIndex];
-        console.log(newChar);
+
+    //password choice
+    else if (lowercaseLett === false && uppercaseLett === false && num === false && specialChar === false) {
+        alert("You must chose at least one password criteria.");
+        var lowercaseL = confirm("Do you want your password to contain lowercase letters?");
+        var uppercaseL = confirm("Do you want your password to contain uppercase letters?");
+        var numbers= confirm("Do you want your password to contain numbers?");
+        var specialChar = confirm("Do you want your password to contain special characters?");
     }
-    password = (password + newChar);
+
+    // Use the criteria that are selected to generate the password
+    if (lowercaseL) {
+        optionsVariable += lowercaseAlphabet;
+    }
+
+    if (uppercaseL) {
+        optionsVariable += uppercaseAlphabet;
+    }
+
+    if (numbers) {
+        optionsVariable += numbers;
+    }
+
+    if (specialChar) {
+        optionsVariable += specialCharacters;
+    }
+
+    // This  function generates a random password based on the choice that have been selected
+    password.value = randomString;
+    for (var i = 0; i < passwordLength; i++) {
+       
+        randomString += optionsVariable.charAt(Math.floor(Math.random() * optionsVariable.length));
+    }
+    
+
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+
 }
 
-passwordDiv = document.getElementById("password");
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
 
-
-
-// Creates a variable to target the button for triggering the copy function
-var copy = document.querySelector("#copy");
-copy.addEventListener("click", function () {
-    copyPassword();
-});
-
-// Copy the password to the clipboard
-function copyPassword() {
-    document.getElementById("password").setAttribute("style", "color: green;");
-    document.getElementById("password").select();
-    document.getElementById("password").focus();
-    document.Command("Copy");
-    alert("Your password has been copied to the clipboard");
+    // Prevent the screen from refreshing when whe button is clicked
+    event.preventDefault();
 }
-
-console.log(copyPassword)
